@@ -32,6 +32,14 @@ const RowSpan = styled.span`
     isOdd ? "hsl(240, 100%, 98%)" : "hsl(240, 100%, 96%)"};
 `;
 
+const AddButton = styled.button`
+  background-color: hsl(240, 100%, 96%);
+  padding: 5px;
+  border-radius: 5px;
+  width: 120px;
+  margin: 0 0 5px 0;
+`;
+
 export const required = value =>
   value || typeof value === "number" ? undefined : "Required";
 export const maxLength = max => value =>
@@ -109,7 +117,7 @@ class CustomTable extends Component {
     eachRow = { ...eachRow, edit: "edit" };
 
     const { rowIsEditing, columnIsEditing } = this.state;
-    const { elements } = this.props;
+    const { elements } = this.state;
 
     return this.headerArr.map((eachTitle, columnIndex) => {
       const validate =
@@ -225,9 +233,24 @@ class CustomTable extends Component {
     });
   };
 
+  onAddClicked = () => {
+    if (this.state.rowIsEditing === -1) {
+      this.props.reset({});
+
+      this.setState({
+        rowIsEditing: this.props.tableValues.length,
+        columnIsEditing: -1
+      });
+      this.props.onAddClicked();
+
+      this.props.rowIsEditing(-1);
+    }
+  };
+
   render() {
     return (
       <div>
+        <AddButton onClick={this.onAddClicked}>Add Row</AddButton>
         <TableHead>{this.renderHeader()}</TableHead>
         <TableBody>{this.renderBody()}</TableBody>
       </div>
