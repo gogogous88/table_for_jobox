@@ -3,9 +3,13 @@ import { Field, reduxForm } from "redux-form";
 
 class CustomTable extends Component {
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, handleValueSubmit } = this.props;
     return (
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit(values => {
+          handleValueSubmit(values);
+        })}
+      >
         <div>
           <label htmlFor="firstName">First Name</label>
           <Field name="firstName" component="input" type="text" />
