@@ -1,4 +1,4 @@
-import { EDITROW } from "./types";
+import { EDITROW } from "../actions/types";
 
 export default (state = {}, action) => {
   switch (action.type) {

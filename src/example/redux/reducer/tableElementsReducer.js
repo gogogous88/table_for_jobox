@@ -1,4 +1,4 @@
-import { SAVEAROW} from "./types";
+import { SAVEAROW} from "../actions/types";
 
 const initState = [];
 
