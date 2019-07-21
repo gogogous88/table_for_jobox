@@ -18,4 +18,6 @@ You will also see any lint errors in the console.
 
 | Property | Type  | Required?  | Discription 
 | :---:    | :-:   | :-:        | :-:     
-| Seconds  | 301   | 283        | 301 | 283 |
+| Seconds  | 301   | 283        | 301 
+| :---:    | :-:   | :-:        | :-:     
+| Seconds  | 301   | 283        | 301 
