@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import _ from "lodash";
 import styled from "styled-components";
 import HOCTable from "./HOCTable";
+import PropTypes from "prop-types";
 
 const TableHead = styled.div`
   display: flex;
@@ -301,3 +302,10 @@ CustomTable = reduxForm({
 })(CustomTable);
 
 export default HOCTable(CustomTable);
+
+CustomTable.propTypes = {
+  tableValues: PropTypes.array.isRequired,
+  elements: PropTypes.object.isRequired,
+  handleRowSubmit: PropTypes.func.isRequired,
+  tableWidth: PropTypes.number
+};
