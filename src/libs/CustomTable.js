@@ -305,7 +305,7 @@ export default HOCTable(CustomTable);
 
 CustomTable.propTypes = {
   tableValues: PropTypes.array.isRequired,
-  elements: PropTypes.object.isRequired,
+  elements: PropTypes.array.isRequired,
   handleRowSubmit: PropTypes.func.isRequired,
   tableWidth: PropTypes.number
 };
