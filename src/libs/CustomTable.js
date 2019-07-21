@@ -34,7 +34,11 @@ const RowSpan = styled.span`
 class CustomTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { elements: _.mapKeys(this.props.elements, "title") };
+    this.state = {
+      elements: _.mapKeys(this.props.elements, "title"),
+      rowIsEditing: -1,
+      columnIsEditing: -1
+    };
   }
 
   componentWillMount = () => {
