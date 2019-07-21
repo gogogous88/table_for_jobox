@@ -18,6 +18,19 @@ const TableHead = styled.div`
   }
 `;
 
+const TableBody = styled(TableHead)`
+  flex-direction: column;
+  span {
+    font-size: 12px;
+    color: #333;
+  }
+`;
+
+const RowSpan = styled.span`
+  background-color: ${({ isOdd }) =>
+    isOdd ? "hsl(240, 100%, 98%)" : "hsl(240, 100%, 96%)"};
+`;
+
 class CustomTable extends Component {
   constructor(props) {
     super(props);
@@ -34,31 +47,131 @@ class CustomTable extends Component {
     });
   };
 
+  renderEachCell = (eachRow, rowIndex) => {
+    eachRow = { ...eachRow, edit: "edit" };
+
+    const { rowIsEditing, columnIsEditing } = this.state;
+    const { elements } = this.props;
+
+    return this.headerArr.map((eachTitle, columnIndex) => {
+      const validate =
+        elements[eachTitle] && elements[eachTitle]["validating"]
+          ? { validate: elements[eachTitle]["validating"] }
+          : { validate: [] };
+
+      const warn =
+        elements[eachTitle] && elements[eachTitle]["warning"]
+          ? { warn: elements[eachTitle]["warning"] }
+          : {};
+      if (eachTitle !== "edit") {
+        if (rowIsEditing === rowIndex) {
+          if (columnIsEditing === columnIndex) {
+            return (
+              <RowSpan isOdd={rowIndex % 2 === 1} key={columnIndex}>
+                <Field
+                  name={eachTitle}
+                  component={props => this.renderField(props)}
+                  type="text"
+                  {...validate}
+                  {...warn}
+                />
+                <RowSpan style={{ margin: 5 }}>
+                  <button>confirm</button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const { reset, InitialValues } = this.props;
+                      reset(InitialValues);
+                      this.setState({ rowIsEditing: -1, columnIsEditing: -1 });
+                    }}
+                  >
+                    cancel
+                  </button>
+                </RowSpan>
+              </RowSpan>
+            );
+          } else if (columnIsEditing === -1) {
+            return (
+              <RowSpan isOdd={rowIndex % 2 === 1} key={columnIndex}>
+                <Field
+                  name={eachTitle}
+                  component={props => this.renderField(props)}
+                  type="text"
+                  {...validate}
+                  {...warn}
+                />
+              </RowSpan>
+            );
+          } else {
+            return (
+              <RowSpan
+                isOdd={rowIndex % 2 === 1}
+                key={columnIndex}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  this.onEditClicked(rowIndex, columnIndex);
+                }}
+              >
+                {eachRow[eachTitle]}
+              </RowSpan>
+            );
+          }
+        } else {
+          return (
+            <RowSpan
+              isOdd={rowIndex % 2 === 1}
+              key={columnIndex}
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                this.onEditClicked(rowIndex, columnIndex);
+              }}
+            >
+              {eachRow[eachTitle]}
+            </RowSpan>
+          );
+        }
+      } else {
+        return (
+          <RowSpan isOdd={rowIndex % 2 === 1} key={columnIndex}>
+            {this.state.rowIsEditing !== rowIndex ? (
+              <div
+                style={{ cursor: "pointer" }}
+                type="button"
+                onClick={() => this.onEditClicked(rowIndex)}
+              >
+                edit
+              </div>
+            ) : (
+              <button type="submit">save</button>
+            )}
+          </RowSpan>
+        );
+      }
+    });
+  };
+
   renderBody = () => {
-    const { handleSubmit, handleValueSubmit } = this.props;
-    return (
-      <form
-        onSubmit={handleSubmit(values => {
-          handleValueSubmit(values);
-        })}
-      >
-        <div>
-          <Field
-            name="firstName"
-            component="input"
-            type="text"
-            placeholder="First Name"
-          />
-        </div>
-      </form>
-    );
+    return this.props.tableValues.map((eachRow, rowIndex) => {
+      return (
+        <form
+          onSubmit={this.props.handleSubmit(values => {
+            this.setState({ rowIsEditing: -1 });
+            this.props.handleRowSubmit(values, rowIndex);
+          })}
+          style={{ display: "flex", flexDirection: "row" }}
+          key={rowIndex}
+        >
+          {this.renderEachCell(eachRow, rowIndex)}
+        </form>
+      );
+    });
   };
 
   render() {
     return (
       <div>
         <TableHead>{this.renderHeader()}</TableHead>
-        {this.renderBody()}
+        <TableBody>{this.renderBody()}</TableBody>
       </div>
     );
   }
