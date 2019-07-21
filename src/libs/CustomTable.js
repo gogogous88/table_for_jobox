@@ -52,6 +52,28 @@ class CustomTable extends Component {
     });
   };
 
+  onEditClicked = (rowIndex, columnIndex) => {
+    if (this.state.rowIsEditing === -1) {
+      columnIndex || typeof columnIndex === "number"
+        ? this.setState({ columnIsEditing: columnIndex })
+        : this.setState({ columnIsEditing: -1 });
+      this.setState({ rowIsEditing: rowIndex });
+      this.props.rowIsEditing(rowIndex);
+    }
+  };
+
+  renderField = ({ input, label, type, meta: { touched, error, warning } }) => {
+    const headerArr = [...Object.keys(this.props.elements), "edit"];
+    return (
+      <span>
+        <input {...input} type={type} />
+        {touched &&
+          ((error && <span>{error}</span>) ||
+            (warning && <span>{warning}</span>))}
+      </span>
+    );
+  };
+
   renderEachCell = (eachRow, rowIndex) => {
     eachRow = { ...eachRow, edit: "edit" };
 
