@@ -1,8 +1,24 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
+import _ from "lodash";
 
 class CustomTable extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = { elements: _.mapKeys(this.props.elements, "title") };
+  }
+
+  componentWillMount = () => {
+    this.headerArr = [...Object.keys(this.state.elements), "edit"];
+  };
+
+  renderHeader = () => {
+    return this.headerArr.map((eachTitle, index) => {
+      return <span key={index}>{eachTitle}</span>;
+    });
+  };
+
+  renderBody = () => {
     const { handleSubmit, handleValueSubmit } = this.props;
     return (
       <form
@@ -11,19 +27,23 @@ class CustomTable extends Component {
         })}
       >
         <div>
-          <label htmlFor="firstName">First Name</label>
-          <Field name="firstName" component="input" type="text" />
+          <Field
+            name="firstName"
+            component="input"
+            type="text"
+            placeholder="First Name"
+          />
         </div>
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <Field name="lastName" component="input" type="text" />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <Field name="email" component="input" type="email" />
-        </div>
-        <button type="submit">Submit</button>
       </form>
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        {this.renderHeader()}
+        {this.renderBody()}
+      </div>
     );
   }
 }
