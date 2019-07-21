@@ -18,6 +18,7 @@ You will also see any lint errors in the console.
 
 | Property | Type  | Required?  | Discription 
 | :---:    | :-:   | :-:        | :-:     
-| Seconds  | 301   | 283        | 301 
-| :---:    | :-:   | :-:        | :-:     
-| Seconds  | 301   | 283        | 301 
+| tableValues  | array   | yes        | 301 
+| elements   | array   | yes    | :-:     
+| tableWidth  | number   |         | 301 
+| handleRowSubmit  | function   | yes       | 301 
