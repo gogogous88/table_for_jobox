@@ -1,8 +1,11 @@
 import { combineReducers } from "redux";
-import { reducer as formReducer } from 'redux-form'
+import { reducer as formReducer } from "redux-form";
+import rowElementsReducer from "./rowElementsReducer";
+import tableElementsReducer from "./tableElementsReducer";
 
 const reducers = combineReducers({
-  // ... your other reducers here ...
+  rowElements: rowElementsReducer,
+  tableElements: tableElementsReducer,
   form: formReducer
 });
 
