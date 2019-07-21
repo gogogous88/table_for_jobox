@@ -102,7 +102,6 @@ class CustomTable extends Component {
   };
 
   renderField = ({ input, label, type, meta: { touched, error, warning } }) => {
-    const headerArr = [...Object.keys(this.props.elements), "edit"];
     return (
       <span>
         <input {...input} type={type} />
