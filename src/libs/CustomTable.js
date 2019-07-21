@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import _ from "lodash";
 import styled from "styled-components";
+import HOCTable from "./HOCTable";
 
 const TableHead = styled.div`
   display: flex;
@@ -180,10 +181,11 @@ class CustomTable extends Component {
     );
   }
 }
-
 CustomTable = reduxForm({
-  // a unique name for the form
-  form: "contact"
+  form: "customTable",
+  keepDirtyOnReinitialize: true,
+  enableReinitialize: true
+  // validate
 })(CustomTable);
 
-export default CustomTable;
+export default HOCTable(CustomTable);
