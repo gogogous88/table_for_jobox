@@ -14,6 +14,8 @@ You will also see any lint errors in the console.
 
 ### Documentation:
 
-| Attempt | #1  | #2  |
-| :---:   | :-: | :-: |
-| Seconds | 301 | 283 |
+### Prop Types:
+
+| Property | Type  | Required?  | Discription 
+| :---:    | :-:   | :-:        | :-:     
+| Seconds  | 301   | 283        | 301 | 283 |
