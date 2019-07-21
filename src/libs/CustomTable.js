@@ -10,11 +10,11 @@ const TableHead = styled.div`
   justify-content: flex-start;
   align-item: center;
   background-color: hsl(240, 100%, 30%);
-  max-width: 1000px;
+  max-width: ${({ tableWidth }) => tableWidth}px;
   span {
     color: #fff;
     padding: 10px;
-    width: 200px;
+    width: ${({ columns, tableWidth }) => tableWidth / columns}px;
     font-size: 16px;
   }
 `;
@@ -22,7 +22,7 @@ const TableHead = styled.div`
 const TableBody = styled(TableHead)`
   flex-direction: column;
   span {
-    font-size: 12px;
+    font-size: 14px;
     color: #333;
   }
 `;
@@ -38,6 +38,33 @@ const AddButton = styled.button`
   border-radius: 5px;
   width: 120px;
   margin: 0 0 5px 0;
+`;
+
+const FormButton = styled.button`
+  height: 22px;
+  border-radius: 5px;
+  background-color: #fbfbfb;
+`;
+
+const EditButton = styled.div`
+  padding: 2px 5px 2px 5px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #fbfbfb;
+  width: 30px;
+  text-align: center;
+`;
+
+const CellButton = styled.button`
+  margin: 5px 2px 0 0;
+`;
+
+const FieldInput = styled.input`
+  width: 140px;
+  height: 20px;
+  border-radius: 5px;
+  border: 0;
+  margin: 0, 0, 5px, 0;
 `;
 
 export const required = value =>
@@ -104,7 +131,7 @@ class CustomTable extends Component {
   renderField = ({ input, label, type, meta: { touched, error, warning } }) => {
     return (
       <span>
-        <input {...input} type={type} />
+        <FieldInput {...input} type={type} />
         {touched &&
           ((error && <span>{error}</span>) ||
             (warning && <span>{warning}</span>))}
@@ -140,9 +167,9 @@ class CustomTable extends Component {
                   {...validate}
                   {...warn}
                 />
-                <RowSpan style={{ margin: 5 }}>
-                  <button>confirm</button>
-                  <button
+                <div style={{ margin: 5 }}>
+                  <CellButton>confirm</CellButton>
+                  <CellButton
                     type="button"
                     onClick={() => {
                       const { reset, InitialValues } = this.props;
@@ -151,8 +178,8 @@ class CustomTable extends Component {
                     }}
                   >
                     cancel
-                  </button>
-                </RowSpan>
+                  </CellButton>
+                </div>
               </RowSpan>
             );
           } else if (columnIsEditing === -1) {
@@ -199,15 +226,15 @@ class CustomTable extends Component {
         return (
           <RowSpan isOdd={rowIndex % 2 === 1} key={columnIndex}>
             {this.state.rowIsEditing !== rowIndex ? (
-              <div
+              <EditButton
                 style={{ cursor: "pointer" }}
                 type="button"
                 onClick={() => this.onEditClicked(rowIndex)}
               >
                 edit
-              </div>
+              </EditButton>
             ) : (
-              <button type="submit">save</button>
+              <FormButton type="submit">save</FormButton>
             )}
           </RowSpan>
         );
@@ -250,8 +277,18 @@ class CustomTable extends Component {
     return (
       <div>
         <AddButton onClick={this.onAddClicked}>Add Row</AddButton>
-        <TableHead>{this.renderHeader()}</TableHead>
-        <TableBody>{this.renderBody()}</TableBody>
+        <TableHead
+          columns={this.headerArr.length}
+          tableWidth={this.props.tableWidth}
+        >
+          {this.renderHeader()}
+        </TableHead>
+        <TableBody
+          columns={this.headerArr.length}
+          tableWidth={this.props.tableWidth}
+        >
+          {this.renderBody()}
+        </TableBody>
       </div>
     );
   }
